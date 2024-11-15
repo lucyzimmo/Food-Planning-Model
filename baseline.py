@@ -8,6 +8,8 @@ food_data = pd.read_csv(file_path)
 # Filter data for Imperial County, California
 imperial_county_data = food_data[(food_data['County'] == 'Imperial') & (food_data['State'] == 'California')]
 
+
+
 # Select relevant columns for supermarket allocation baseline
 selected_columns = ['CensusTract', 'POP2010', 'TractSNAP']
 imperial_county_data = imperial_county_data[selected_columns]
