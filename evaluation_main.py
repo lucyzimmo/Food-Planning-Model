@@ -1,9 +1,15 @@
+"""
+This script calculates the evaluation metrics for the assigned supermarkets."""
 import pandas as pd
 import numpy as np
 
 # Load the provided data file
 file_path = 'assigned_supermarkets.csv'
-imperial_county_data = pd.read_csv(file_path)
+file_path_proportional = 'assigned_supermarket_proportional.csv'
+file_path_baseline = 'assigned_supermarkets_random.csv'
+main = pd.read_csv(file_path)
+proportional = pd.read_csv(file_path_proportional)
+baseline = pd.read_csv(file_path_baseline)
 
 # Metric 1: Coverage of Low-Income Households
 def coverage_of_low_income_households(data):
@@ -39,13 +45,20 @@ def household_income_balance(data):
     return variance_income
 
 # Calculate and print each metric
-low_income_coverage = coverage_of_low_income_households(imperial_county_data)
-population_coverage_value = population_coverage(imperial_county_data)
-combined_coverage_value = combined_coverage(imperial_county_data, alpha=0.5, beta=0.5)
-income_balance_variance = household_income_balance(imperial_county_data)
+low_income_coverage = coverage_of_low_income_households(main)
+low_income_coverage_p = coverage_of_low_income_households(proportional)
+low_income_coverage_b = coverage_of_low_income_households(baseline)
+population_coverage_value = population_coverage(main)
+population_coverage_value_p = population_coverage(proportional)
+population_coverage_value_b = population_coverage(baseline)
+combined_coverage_value = combined_coverage(main, alpha=0.5, beta=0.5)
+combined_coverage_value_p = combined_coverage(proportional, alpha=0.5, beta=0.5)
+combined_coverage_value_b = combined_coverage(baseline, alpha=0.5, beta=0.5)
+income_balance_variance = household_income_balance(main)
+income_balance_variance_p = household_income_balance(proportional)
 
 # Display results
-print(f"Coverage of Low-Income Households: {low_income_coverage:.2f}%")
-print(f"Population Coverage: {population_coverage_value:.2f}%")
-print(f"Combined Coverage: {combined_coverage_value:.2f}%")
-print(f"Household Income Balance: {income_balance_variance:.2f}")
+print(f"Coverage of Low-Income Households: main: {low_income_coverage:.2f}% proportional: {low_income_coverage_p:.2f}% baseline: {low_income_coverage_b:.2f}%")
+print(f"Population Coverage: main: {population_coverage_value:.2f}% proportional: {low_income_coverage_p:.2f}%  baseline: {low_income_coverage_b:.2f}%")
+print(f"Combined Coverage: main: {combined_coverage_value:.2f}% proportional: {combined_coverage_value_p:.2f}% baseline: {combined_coverage_value_b:.2f}%")
+print(f"Household Income Balance: main: {income_balance_variance:.2f} proportional: {income_balance_variance_p:.2f} baseline: not applicable")

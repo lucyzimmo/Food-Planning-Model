@@ -1,3 +1,6 @@
+"""
+This script generates a random allocation of supermarkets to census tracts in Imperial County, California, 
+and is our baseline for comparison with other optimization methods."""
 import pandas as pd
 import numpy as np
 
