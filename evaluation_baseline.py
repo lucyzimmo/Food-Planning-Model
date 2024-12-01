@@ -2,12 +2,14 @@ import pandas as pd
 
 # Load the assigned supermarket data
 file_path = 'assigned_supermarkets_random.csv'
-imperial_county_data = pd.read_csv(file_path)
+imperial_county_data_random = pd.read_csv(file_path)
+
+
 
 # Calculate Geographic Coverage
 def calculate_geographic_coverage(data):
     # Count the number of tracts with at least one supermarket
-    tracts_with_supermarkets = data[data['Assigned_Supermarkets'] > 0].shape[0]
+    tracts_with_supermarkets = data[data['Assigned_Supermarkets'] > 1].shape[0]
     total_tracts = data.shape[0]
     geographic_coverage = (tracts_with_supermarkets / total_tracts) * 100  # percentage
     return geographic_coverage
@@ -21,8 +23,10 @@ def calculate_population_coverage(data):
     return population_coverage
 
 # Run the evaluation
-geographic_coverage = calculate_geographic_coverage(imperial_county_data)
-population_coverage = calculate_population_coverage(imperial_county_data)
+geographic_coverage = calculate_geographic_coverage(imperial_county_data_random)
+population_coverage = calculate_population_coverage(imperial_county_data_random)
+
+
 
 # Print the evaluation results
 print(f"Geographic Coverage: {geographic_coverage:.2f}% of tracts have at least one supermarket.")

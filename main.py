@@ -9,11 +9,11 @@ imperial_county_data = food_data[(food_data['County'] == 'Imperial') & (food_dat
 
 # Select relevant columns for supermarket allocation baseline
 # Population (POP2010) and SNAP usage (TractSNAP) for additional analysis if needed
-selected_columns = ['CensusTract', 'POP2010', 'TractSNAP']
+selected_columns = ['CensusTract', 'POP2010', 'TractSNAP', 'MedianFamilyIncome']
 imperial_county_data = imperial_county_data[selected_columns]
 
 # Define the total number of supermarkets to be distributed
-TOTAL_NEW_SUPERMARKETS = 100  # to act as a percentage
+TOTAL_NEW_SUPERMARKETS = 10  # to act as a percentage
 
 # Step 1: Calculate Population Proportion
 total_population = imperial_county_data['POP2010'].sum()
