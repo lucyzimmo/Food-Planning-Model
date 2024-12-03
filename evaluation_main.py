@@ -59,6 +59,6 @@ income_balance_variance_p = household_income_balance(proportional)
 
 # Display results
 print(f"Coverage of Low-Income Households: main: {low_income_coverage:.2f}% proportional: {low_income_coverage_p:.2f}% baseline: {low_income_coverage_b:.2f}%")
-print(f"Population Coverage: main: {population_coverage_value:.2f}% proportional: {low_income_coverage_p:.2f}%  baseline: {low_income_coverage_b:.2f}%")
+print(f"Population Coverage: main: {population_coverage_value:.2f}% proportional: {population_coverage_value_p:.2f}%  baseline: {population_coverage_value_b:.2f}%")
 print(f"Combined Coverage: main: {combined_coverage_value:.2f}% proportional: {combined_coverage_value_p:.2f}% baseline: {combined_coverage_value_b:.2f}%")
 print(f"Household Income Balance: main: {income_balance_variance:.2f} proportional: {income_balance_variance_p:.2f} baseline: not applicable")
