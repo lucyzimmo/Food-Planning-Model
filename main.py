@@ -29,7 +29,7 @@ ADJACENCY_LIMIT = 4
 MEDIAN_INCOME_THRESHOLD = 30000 # median income for poverty threshold
 MAX_SUPERMARKETS_PER_TRACT = 3
 ALPHA = 0.7 # weight for low-income household coverage
-BETA = 0.5  # weight for population coverage
+BETA = 0.3  # weight for population coverage
 
 # Prepare data for optimization
 tracts = imperial_county_data['CensusTract'].tolist()
