@@ -25,9 +25,9 @@ imperial_county_data = imperial_county_data[selected_columns]
 
 # Define constants
 TOTAL_NEW_SUPERMARKETS = 100
-ADJACENCY_LIMIT = 4
+ADJACENCY_LIMIT = 6
 MEDIAN_INCOME_THRESHOLD = 30000 # median income for poverty threshold
-MAX_SUPERMARKETS_PER_TRACT = 3
+MAX_SUPERMARKETS_PER_TRACT = 4
 ALPHA = 0.7 # weight for low-income household coverage
 BETA = 0.3  # weight for population coverage
 
