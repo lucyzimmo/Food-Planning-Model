@@ -3,9 +3,10 @@ This script demonstrates how to use linear programming to optimize the allocatio
 in Imperial County, California.
 """
 import pandas as pd
-from pulp import LpProblem, LpVariable, LpInteger, LpMaximize, lpSum, PULP_CBC_CMD
+from pulp import LpProblem, LpVariable, LpInteger, LpMaximize, lpSum, PULP_CBC_CMD, LpBinary
 import numpy as np
 import json
+import math
 
 # Load the provided data
 file_path = 'data/food_access_research_atlas.csv'
@@ -25,10 +26,10 @@ imperial_county_data = imperial_county_data[selected_columns]
 # Define constants
 TOTAL_NEW_SUPERMARKETS = 100
 ADJACENCY_LIMIT = 4
-MEDIAN_INCOME_THRESHOLD = 30000 #median income for poverty threshold
+MEDIAN_INCOME_THRESHOLD = 30000 # median income for poverty threshold
 MAX_SUPERMARKETS_PER_TRACT = 3
-ALPHA = 0.7 #weight for low-income household coverage
-BETA = 0.3  #weight for population coverage
+ALPHA = 0.7 # weight for low-income household coverage
+BETA = 0.5  # weight for population coverage
 
 # Prepare data for optimization
 tracts = imperial_county_data['CensusTract'].tolist()
@@ -59,13 +60,13 @@ supermarkets = {
 
 # Add binary variables to indicate if a tract has any supermarkets
 has_supermarket = {
-    tract: LpVariable(f"has_supermarket_{tract}", 0, 1, LpInteger)
+    tract: LpVariable(f"has_supermarket_{tract}", 0, 1, LpBinary)
     for tract in tracts
 }
 
 # Link `supermarkets` and `has_supermarket` variables
 for tract in tracts:
-    problem += supermarkets[tract] <= MAX_SUPERMARKETS_PER_TRACT * has_supermarket[tract], f"LinkBinary_{tract}"
+    problem += supermarkets[tract] - MAX_SUPERMARKETS_PER_TRACT * has_supermarket[tract] <= 0, f"LinkBinary_{tract}"
 
 # Normalize metrics
 max_population = max(population.values())
@@ -80,15 +81,10 @@ problem += (
         for tract in tracts
     ])
     - lpSum([
-        has_supermarket[tract] * ((median_income[tract] - mean_income) ** 2)
+        has_supermarket[tract] * (median_income[tract] - mean_income) ** 2
         for tract in tracts
     ])
 ), "MaximizeCombinedCoverageAndMinimizeVariance"
-
-# Median income threshold
-for tract in tracts:
-    if median_income[tract] > MEDIAN_INCOME_THRESHOLD:
-        problem += supermarkets[tract] == 0, f"IncomeThreshold_{tract}"
 
 # Total supermarkets allocation
 problem += lpSum(supermarkets.values()) == TOTAL_NEW_SUPERMARKETS, "TotalSupermarketsLimit"
@@ -100,8 +96,13 @@ filtered_adjacency = {
     if tract in supermarkets
 }
 
+seen = set()
 for tract, neighbors in filtered_adjacency.items():
-    problem += lpSum([supermarkets[tract]] + [supermarkets[neighbor] for neighbor in neighbors]) <= ADJACENCY_LIMIT, f"AdjacencyLimit_{tract}"
+    for neighbor in neighbors:
+        if (tract, neighbor) not in seen and (neighbor, tract) not in seen:
+            problem += supermarkets[tract] + supermarkets[neighbor] <= ADJACENCY_LIMIT, f"AdjacencyLimit_{tract + " " + neighbor}"
+            seen.add((tract, neighbor))
+            seen.add((neighbor, tract))
 
 # Solve the problem
 solver = PULP_CBC_CMD(msg=True)
@@ -122,3 +123,6 @@ print(f"Supermarket allocation results saved to: {output_file_path}")
 print("Optimization Status:", problem.status)
 for tract in tracts:
     print(f"Census Tract {tract}: {supermarkets[tract].varValue} supermarkets")
+
+debuggingFile = 'debugLP.lp'
+problem.writeLP(debuggingFile)
