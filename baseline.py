@@ -4,6 +4,8 @@ and is our baseline for comparison with other optimization methods."""
 import pandas as pd
 import numpy as np
 
+np.random.seed(0)  # set constant seed for reproducibility
+
 # Load the provided data
 file_path = 'data/food_access_research_atlas.csv'
 food_data = pd.read_csv(file_path)
@@ -18,7 +20,7 @@ selected_columns = ['CensusTract', 'POP2010', 'TractSNAP']
 imperial_county_data = imperial_county_data[selected_columns]
 
 # Define the total number of supermarkets to be distributed
-TOTAL_NEW_SUPERMARKETS = 10
+TOTAL_NEW_SUPERMARKETS = 100
 
 # Step 1: Create Random Allocation of Supermarkets
 # Generate random allocations that sum to TOTAL_NEW_SUPERMARKETS
