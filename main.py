@@ -6,7 +6,6 @@ import pandas as pd
 from pulp import LpProblem, LpVariable, LpInteger, LpMaximize, lpSum, PULP_CBC_CMD, LpBinary
 import numpy as np
 import json
-import math
 
 # Load the provided data
 file_path = 'data/food_access_research_atlas.csv'
