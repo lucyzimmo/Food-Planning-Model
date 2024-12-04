@@ -20,7 +20,7 @@ selected_columns = ['CensusTract', 'POP2010', 'TractSNAP']
 imperial_county_data = imperial_county_data[selected_columns]
 
 # Define the total number of supermarkets to be distributed
-TOTAL_NEW_SUPERMARKETS = 100
+TOTAL_NEW_SUPERMARKETS = 30
 
 # Step 1: Create Random Allocation of Supermarkets
 # Generate random allocations that sum to TOTAL_NEW_SUPERMARKETS
