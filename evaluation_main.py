@@ -48,10 +48,9 @@ def household_income_balance(data):
 # Metric 5: Geographic Coverage
 def geographic_coverage(data):
     # Count the number of tracts with at least one supermarket
-    tracts_with_supermarkets = data[data['Assigned_Supermarkets'] > 1].shape[0]
+    tracts_with_supermarkets = data[data['Assigned_Supermarkets'] > 0].shape[0]
     total_tracts = data.shape[0]
-    geographic_coverage = (tracts_with_supermarkets / total_tracts) * 100  # percentage
-    return geographic_coverage
+    return (tracts_with_supermarkets / total_tracts) * 100 if total_tracts > 0 else 0
 
 # Calculate and print each metric
 low_income_coverage = coverage_of_low_income_households(main)
