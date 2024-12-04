@@ -6,6 +6,11 @@ import pandas as pd
 from pulp import LpProblem, LpVariable, LpInteger, LpMaximize, lpSum, PULP_CBC_CMD, LpBinary
 import numpy as np
 import json
+<<<<<<< Updated upstream
+=======
+import geopandas as gpd
+import matplotlib.pyplot as plt
+>>>>>>> Stashed changes
 
 # Load the provided data
 file_path = 'data/food_access_research_atlas.csv'
@@ -125,3 +130,30 @@ for tract in tracts:
 
 debuggingFile = 'debugLP.lp'
 problem.writeLP(debuggingFile)
+
+# visualization
+"imperial_county.xlsx"
+imperial = gpd.read_file("imperial_county_supp/imperial_county.shp")
+fig = plt.figure()
+ax = fig.add_axes([0, 0, 1, 1])
+imperial.plot(column="TractSNAP", ax=ax, edgecolor="floralwhite", vmin=0, vmax=1000, linewidth=0.5, legend=True, legend_kwds={'label': "Tract Snap", 'orientation': "vertical"})
+plt.title("Imperial County Population Receiving Snap by Tracts, 2010")
+plt.savefig('tract_snap.svg', bbox_inches='tight')
+
+fig2 = plt.figure()
+ax2 = fig2.add_axes([0, 0, 1, 1])
+imperial.plot(column="POP2010", ax=ax2, edgecolor="floralwhite", vmin=100, vmax=13000, linewidth=0.5, legend=True, legend_kwds={'label': "Population 2010", 'orientation': "vertical"})
+plt.title("Imperial County Population 2010 by Tracts")
+plt.savefig('population.svg', bbox_inches='tight')
+
+fig3 = plt.figure()
+ax3 = fig3.add_axes([0, 0, 1, 1])
+imperial.plot(column="PovertyRat", ax=ax3, edgecolor="floralwhite", vmin=0, vmax=100, linewidth=0.5, legend=True, legend_kwds={'label': "PovertyRate", 'orientation': "vertical"})
+plt.title("Imperial County Poverty Rate Tract, 2010")
+plt.savefig('povertyrate.svg', bbox_inches='tight')
+
+fig4 = plt.figure()
+ax4 = fig4.add_axes([0, 0, 1, 1])
+imperial.plot(column="GEOID10", ax=ax4, edgecolor="floralwhite", legend=True)
+plt.title("Imperial County Tract IDs")
+plt.savefig('tractmap.svg', bbox_inches='tight')
